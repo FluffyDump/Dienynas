@@ -1,0 +1,38 @@
+﻿@page
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="utf-8" />
+    <title>Registracija</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <h1>Registracijos Puslapis</h1>
+    <form onsubmit="event.preventDefault(); show2fa();">
+        <label>Vartotojo vardas:</label>
+        <input type="text" required>
+        <br />
+        <label>Slaptažodis:</label>
+        <input type="password" required>
+        <br />
+        <label>El. Paštas:</label>
+        <input type="email" required>
+        <br />
+        <button type="submit">Registruotis</button>
+    </form>
+
+    <div class="overlay" id="2faOverlay" style="display: none;">
+        <div class="popup">
+            <label>2FA Kodas:</label>
+            <input type="text" id="2faCode">
+            <br />
+            <button onclick="validate2fa('/Profile')">Patvirtinti</button>
+        </div>
+    </div>
+</body>
+<script src="~/js/site.js"></script>
+</html>

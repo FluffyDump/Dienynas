@@ -1,0 +1,30 @@
+﻿@page
+@{
+    ViewData["Title"] = "Profilis";
+}
+
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="utf-8" />
+    <title>Profilis</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <h1>Profilio Peržiūra</h1>
+    <p>Informacija apie vartotoją</p>
+    <button onclick="window.location.href='/ProfileEdit'">Redaguoti Profilį</button>
+    <button onclick="window.location.href='/ChangePassword'">Keisti Slaptažodį</button>
+    <button onclick="window.location.href='/ChangeEmail'">Keisti El. Paštą</button>
+    <button onclick="window.location.href='/LoginHistory'">Prisijungimų Istorija</button>
+
+    <div class="overlay" id="logoutOverlay" style="display: none;">
+        <div class="popup">
+            <p>Ar tikrai norite atsijungti?</p>
+            <button onclick="confirmLogout()">Taip</button>
+            <button onclick="hideLogout()">Ne</button>
+        </div>
+    </div>
+</body>
+<script src="~/js/site.js"></script>
+</html>

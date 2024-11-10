@@ -1,0 +1,31 @@
+﻿@page
+@{
+    ViewData["Title"] = "Profilis";
+}
+
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="utf-8" />
+    <title>Keisti Elektroninio Pašto adresą</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <h1>Keisti Elektroninio Pašto adresą</h1>
+    <form onsubmit="event.preventDefault(); show2fa();">
+        <label>Naujas elektroninis pašto adresas:</label>
+        <input type="email" required>
+        <br />
+        <button type="submit">Išsaugoti</button>
+    </form>
+    <div class="overlay" id="2faOverlay" style="display: none;">
+        <div class="popup">
+            <label>2FA Kodas:</label>
+            <input type="text" id="2faCode">
+            <br />
+            <button onclick="validate2fa('/Profile')">Patvirtinti</button>
+        </div>
+    </div>
+</body>
+<script src="~/js/site.js"></script>
+</html>

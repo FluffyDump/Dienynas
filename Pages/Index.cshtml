@@ -1,10 +1,18 @@
 ﻿@page
-@model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    Layout = null;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="utf-8" />
+    <title>Pagrindinis Puslapis</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <h1>Pagrindinis Puslapis</h1>
+    <button onclick="window.location.href='/Login'">Prisijungti</button>
+    <button onclick="window.location.href='/Register'">Registruotis</button>
+</body>
+</html>

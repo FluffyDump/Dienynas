@@ -1,0 +1,32 @@
+﻿@page
+@{
+    ViewData["Title"] = "Profilis";
+}
+
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="utf-8" />
+    <title>Redaguoti Profilį</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <h1>Redaguoti Profilį</h1>
+    <form onsubmit="event.preventDefault(); saveAndRedirect();">
+        <label>Dabartinis vartotojo vardas:</label>
+        <p>Vartotojo_vardas</p>
+        <br />
+        <label>Dabartinis vartotojo aprašymas:</label>
+        <p>Vartotojo_aprašymas</p>
+        <br />
+        <label>Naujas vartotojo vardas:</label>
+        <input type="text">
+        <br />
+        <label>Naujas vartotojo aprašymas:</label>
+        <input type="text">
+        <br />
+        <button type="submit">Išsaugoti</button>
+    </form>
+</body>
+<script src="~/js/site.js"></script>
+</html>
