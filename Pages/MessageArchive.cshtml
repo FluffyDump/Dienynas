@@ -1,0 +1,46 @@
+﻿@page
+@{
+    ViewData["Title"] = "Archyvuoti Žinutės";
+}
+
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="utf-8" />
+    <title>Archyvuoti Žinutės</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <h1>Archyvuoti Žinutės</h1>
+    <p>Visos archyvuotos žinutės</p>
+
+    <table class="message-table">
+        <thead>
+            <tr>
+                <th>Siuntėjas</th>
+                <th>Žinutės Pavadinimas</th>
+                <th>Archyvuoti</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background-color: #f2f2f2; text-decoration: line-through; color: #aaa;">
+                <td>Jonas</td>
+                <td>Testinė žinutė nuo Jono</td>
+                <td><button class="message-button" disabled>Archyvuota</button></td>
+            </tr>
+            <tr>
+                <td>Petra</td>
+                <td>Sveikinimai nuo Petros</td>
+                <td><button class="message-button">Archyvuoti</button></td>
+            </tr>
+            <tr>
+                <td>Mantas</td>
+                <td>Susitikimo informacija</td>
+                <td><button class="message-button">Archyvuoti</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="~/js/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+﻿@page
+@{
+    ViewData["Title"] = "Nauja Žinutė";
+}
+
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="utf-8" />
+    <title>Nauja Žinutė</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <h1>Parašyti Naują Žinutę</h1>
+
+    <!-- Form starts here -->
+    <form id="newMessageForm">
+        <div class="form-group">
+            <label for="recipient">Siuntėjas (Vartotojo vardas):</label>
+            <input type="text" id="recipient" name="recipient" required />
+        </div>
+
+        <div class="form-group">
+            <label for="title">Žinutės Pavadinimas:</label>
+            <input type="text" id="title" name="title" required />
+        </div>
+
+        <div class="form-group">
+            <label for="messageBody">Žinutės Turinys:</label>
+            <textarea id="messageBody" name="messageBody" rows="5" required></textarea>
+        </div>
+
+        <button type="submit" class="message-button">Siųsti Žinutę</button>
+    </form>
+
+    <script>
+        document.getElementById('newMessageForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            window.location.href = '/MessageList'; 
+        });
+    </script>
+
+    <script src="~/js/site.js"></script>
+</body>
+</html>
