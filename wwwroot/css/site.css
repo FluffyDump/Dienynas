@@ -47,6 +47,21 @@ body, h1, form, table {
         background-color: #d32f2f;
     }
 
+.message-button {
+    background-color: #2196F3;
+    color: #00f;
+    border: none;
+    padding: 8px 16px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+    .message-button:hover {
+        background-color: #1976D2; 
+    }
+
 .overlay {
     display: none;
     position: fixed;
@@ -67,3 +82,32 @@ body, h1, form, table {
 .show {
     display: block;
 }
+.message-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+    .message-table th, .message-table td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .message-table th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .message-table td a {
+        color: #2196F3;
+        text-decoration: none;
+    }
+
+        .message-table td a:hover {
+            text-decoration: underline;
+        }
+
+    .message-table tr:hover {
+        background-color: #f9f9f9;
+    }

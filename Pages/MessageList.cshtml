@@ -1,0 +1,44 @@
+﻿@page
+@{
+    ViewData["Title"] = "Žinutės Sąrašas";
+}
+
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="utf-8" />
+    <title>Žinutės Sąrašas</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <h1>Žinučių Sąrašas</h1>
+    <p>Visos gautos žinutės</p>
+
+    <button onclick="window.location.href='/NewMessage'">Parašyti žinutę</button>
+    <button onclick="window.location.href='/MessageArchive'">Archyvuoti žinutę</button>
+    <table class="message-table">
+        <thead>
+            <tr>
+                <th>Siuntėjas</th>
+                <th>Žinutės Pavadinimas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Jonas</td>
+                <td><a href="/Message/1">Testinė žinutė nuo Jono</a></td>
+            </tr>
+            <tr>
+                <td>Petra</td>
+                <td><a href="/Message/2">Sveikinimai nuo Petros</a></td>
+            </tr>
+            <tr>
+                <td>Mantas</td>
+                <td><a href="/Message/3">Susitikimo informacija</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="~/js/site.js"></script>
+</body>
+</html>

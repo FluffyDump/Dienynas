@@ -1,0 +1,27 @@
+﻿@page "{messageId:int}"
+@{
+    ViewData["Title"] = "Žinutės Detalės";
+    var messageId = RouteData.Values["messageId"];
+}
+
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="utf-8" />
+    <title>Žinutės Detalės</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <h1>Žinutės Peržiūra</h1>
+
+    <div class="message-details">
+        <p><strong>Siuntėjas:</strong> <span>Jonas</span></p>
+        <p><strong>Data:</strong> <span>2024-11-11</span></p>
+        <p><strong>Žinutė:</strong> <span>Ši žinutė yra testinė. Ji rodo, kaip atrodytų pilna žinutė, įskaitant siuntėją, datą ir turinį.</span></p>
+    </div>
+
+    <button onclick="window.location.href='/MessageList'">Grįžti į žinučių sąrašą</button>
+
+    <script src="~/js/site.js"></script>
+</body>
+</html>
