@@ -1,0 +1,117 @@
+@page
+@{
+    ViewData["Title"] = "Pažymių sistema";
+}
+
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pažymių sistema</title>
+    <style>
+        /* Pagrindinis stilius */
+
+        .grades-container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .grades-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .grades-table, .grades-table th, .grades-table td {
+            border: 1px solid #ddd;
+        }
+
+        .grades-table th, .grades-table td {
+            text-align: center;
+            padding: 8px;
+        }
+
+        .grades-input, .grades-button, .grades-textarea {
+            margin-top: 10px;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .grades-button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+
+        .grades-button:hover {
+            background-color: #0056b3;
+        }
+
+        .grades-report-section {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Pažymių sistema -->
+    <div class="grades-container">
+        <h1>Pažymių sistema</h1>
+
+        <!-- Lentelė pažymiams -->
+        <table class="grades-table">
+            <thead>
+                <tr>
+                    <th>Nr.</th>
+                    <th>Pažymys</th>
+                    <th>Komentaras</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>9</td>
+                    <td>Labai gerai!</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>8</td>
+                    <td>Gerai atliktas darbas.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Forma pažymiui ir komentarui -->
+        <input type="number" class="grades-input" placeholder="Įveskite pažymį (1-10)" min="1" max="10">
+        <textarea class="grades-textarea" rows="3" placeholder="Įveskite komentarą"></textarea>
+        <button class="grades-button">Pridėti pažymį</button>
+
+        <!-- Vidurkis -->
+        <h3>Vidurkis: <span>-</span></h3>
+
+        <!-- Mygtukas generuoti ataskaitą -->
+        <button class="grades-button">Generuoti ataskaitą</button>
+
+        <!-- Ataskaitos sekcija -->
+        <div class="grades-report-section">
+            <h3>Ataskaita:</h3>
+            <p>Čia bus rodomos pažymių detalės...</p>
+        </div>
+    </div>
+</body>
+</html>
