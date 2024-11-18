@@ -58,6 +58,18 @@ body, h1, form, table {
     transition: background-color 0.3s ease;
 }
 
+.schedule-button {
+    background-color: #b823ab;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 8px 16px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+
     .message-button:hover {
         background-color: #1976D2; 
     }

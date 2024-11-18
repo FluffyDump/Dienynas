@@ -1,0 +1,170 @@
+@page
+@{
+    ViewData["Title"] = "Mokinių Tvarkaraštis";
+}
+
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="utf-8" />
+    <title>Mokinių Tvarkaraštis</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        .schedule-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .day-column {
+            border: 1px solid #ddd;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .day-column h3 {
+            text-align: center;
+            background-color: #007bff;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .lesson {
+            margin-bottom: 10px;
+            padding: 5px;
+            background-color: #e9ecef;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .lesson input[type="checkbox"] {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mokinių Tvarkaraštis</h1>
+
+    <button onclick="showSchedule()">Tvarkaraštis</button>
+    <button onclick="showFreeRoomSearch()">Laisvo Kabineto Paieška</button>
+
+    <!-- Tvarkaraščio sekcija -->
+    <div id="schedule-section" style="display:none;">
+        <h2>Tvarkaraštis</h2>
+        <div class="schedule-container">
+            <!-- Pirmadienis -->
+            <div class="day-column">
+                <h3>Pirmadienis</h3>
+                <div class="lesson">
+                    08:00 - 08:45: Matematika 
+                    <input type="checkbox" name="reminder" value="Matematika"> Priminti
+                </div>
+                <div class="lesson">
+                    09:00 - 09:45: Lietuvių kalba 
+                    <input type="checkbox" name="reminder" value="Lietuvių kalba"> Priminti
+                </div>
+            </div>
+
+            <!-- Antradienis -->
+            <div class="day-column">
+                <h3>Antradienis</h3>
+                <div class="lesson">
+                    08:00 - 08:45: Istorija 
+                    <input type="checkbox" name="reminder" value="Istorija"> Priminti
+                </div>
+                <div class="lesson">
+                    09:00 - 09:45: Biologija 
+                    <input type="checkbox" name="reminder" value="Biologija"> Priminti
+                </div>
+            </div>
+
+            <!-- Trečiadienis -->
+            <div class="day-column">
+                <h3>Trečiadienis</h3>
+                <div class="lesson">
+                    08:00 - 08:45: Fizika 
+                    <input type="checkbox" name="reminder" value="Fizika"> Priminti
+                </div>
+                <div class="lesson">
+                    09:00 - 09:45: Chemija 
+                    <input type="checkbox" name="reminder" value="Chemija"> Priminti
+                </div>
+            </div>
+
+            <!-- Ketvirtadienis -->
+            <div class="day-column">
+                <h3>Ketvirtadienis</h3>
+                <div class="lesson">
+                    08:00 - 08:45: Anglų kalba 
+                    <input type="checkbox" name="reminder" value="Anglų kalba"> Priminti
+                </div>
+                <div class="lesson">
+                    09:00 - 09:45: Kūno kultūra 
+                    <input type="checkbox" name="reminder" value="Kūno kultūra"> Priminti
+                </div>
+            </div>
+
+            <!-- Penktadienis -->
+            <div class="day-column">
+                <h3>Penktadienis</h3>
+                <div class="lesson">
+                    08:00 - 08:45: Muzika 
+                    <input type="checkbox" name="reminder" value="Muzika"> Priminti
+                </div>
+                <div class="lesson">
+                    09:00 - 09:45: Dailė 
+                    <input type="checkbox" name="reminder" value="Dailė"> Priminti
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Laisvo kabineto paieškos sekcija -->
+    <div id="free-room-search-section" style="display:none;">
+        <h2>Laisvo Kabineto Paieška</h2>
+        <form id="free-room-form">
+            <label for="start-time">Pamokos pradžios laikas:</label>
+            <select id="start-time" name="start-time">
+                <option value="08:00">08:00</option>
+                <option value="08:45">08:45</option>
+                <option value="09:30">09:30</option>
+                <option value="10:15">10:15</option>
+                <option value="11:00">11:00</option>
+            </select>
+            <button type="button" onclick="findFreeRooms()">Ieškoti</button>
+        </form>
+        <div id="free-rooms-list" style="display:none;">
+            <h3>Laisvi kabinetai</h3>
+            <ul>
+                <li>Kabinetas 101 <button onclick="selectRoom(101)">Pasirinkti</button></li>
+                <li>Kabinetas 203 <button onclick="selectRoom(203)">Pasirinkti</button></li>
+                <li>Kabinetas 302 <button onclick="selectRoom(302)">Pasirinkti</button></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function showSchedule() {
+            document.getElementById('schedule-section').style.display = 'block';
+            document.getElementById('free-room-search-section').style.display = 'none';
+        }
+
+        function showFreeRoomSearch() {
+            document.getElementById('schedule-section').style.display = 'none';
+            document.getElementById('free-room-search-section').style.display = 'block';
+        }
+
+        function findFreeRooms() {
+            // Simulate free room search
+            document.getElementById('free-rooms-list').style.display = 'block';
+        }
+
+        function selectRoom(roomNumber) {
+            alert(`Jūs pasirinkote kabinetą: ${roomNumber}`);
+        }
+    </script>
+</body>
+</html>
