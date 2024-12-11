@@ -1,7 +1,5 @@
 ﻿@page
-@{
-    Layout = null;
-}
+@model RazorPages.Pages.RegisterModel
 
 <!DOCTYPE html>
 <html lang="lt">
@@ -9,30 +7,72 @@
     <meta charset="utf-8" />
     <title>Registracija</title>
     <link rel="stylesheet" href="~/css/site.css" />
+    <script>
+        function validateForm() {
+            const birthDateInput = document.querySelector("input[name='gimimo_data']");
+            const birthDate = new Date(birthDateInput.value);
+            const today = new Date();
+            
+            if (birthDate > today) {
+                alert("Gimimo data negali būti ateityje!");
+                return false;
+            }
+            return true;
+        }
+    </script>
 </head>
 <body>
     <h1>Registracijos Puslapis</h1>
-    <form onsubmit="event.preventDefault(); show2fa();">
-        <label>Vartotojo vardas:</label>
-        <input type="text" required>
-        <br />
+
+    <!-- Check if Model.Input is null -->
+    @if (Model?.Input == null)
+    {
+        <p>Error: Model or Input is null!</p>
+    }
+
+    <!-- Display any ModelState errors -->
+    @if (!ModelState.IsValid)
+    {
+        <div style="color: red;">
+            <ul>
+                @foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <form method="post" onsubmit="return validateForm();">
+        <label>Vardas:</label>
+        <input type="text" name="vardas" required />
+
+        <label>Pavarde:</label>
+        <input type="text" name="pavarde" required />
+
+        <label>Slapyvardis:</label>
+        <input type="text" name="slapyvardis" required />
+
+        <label>Gimimo Data:</label>
+        <input type="date" name="gimimo_data" required />
+
+        <label>Elektroninis Paštas:</label>
+        <input type="email" name="elektroninis_pastas" required />
+
         <label>Slaptažodis:</label>
-        <input type="password" required>
-        <br />
-        <label>El. Paštas:</label>
-        <input type="email" required>
-        <br />
-        <button type="submit">Registruotis</button>
+        <input type="password" name="slaptazodis" required />
+
+        <label>Mokymo Įstaigos Pavadinimas:</label>
+        <input type="text" name="mokymo_istaigos_pavadinimas" required />
+
+        <label>Miestas:</label>
+        <input type="text" name="miestas" required />
+
+        <label>Adresas:</label>
+        <input type="text" name="adresas" required />
+
+        <button type="submit">Register</button>
     </form>
 
-    <div class="overlay" id="2faOverlay" style="display: none;">
-        <div class="popup">
-            <label>2FA Kodas:</label>
-            <input type="text" id="2faCode">
-            <br />
-            <button onclick="validate2fa('/Profile')">Patvirtinti</button>
-        </div>
-    </div>
 </body>
-<script src="~/js/site.js"></script>
 </html>
