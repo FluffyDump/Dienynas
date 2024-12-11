@@ -59,8 +59,24 @@ namespace RazorPages.Pages
 
                     if (newUserId > 0)
                     {
-                        string insertMokinysQuery = $"INSERT INTO Mokinys (naudotojo_id) VALUES ({newUserId})";
-                        using (var command = new MySqlCommand(insertMokinysQuery, connection))
+                        string insertRoleQuery = string.Empty;
+
+                        switch (Input.profilio_tipas)
+                        {
+                            case "Mokinys":
+                                insertRoleQuery = $"INSERT INTO Mokinys (naudotojo_id) VALUES ({newUserId});";
+                                break;
+                            case "Mokytojas":
+                                insertRoleQuery = $"INSERT INTO Mokytojas (naudotojo_id) VALUES ({newUserId});";
+                                break;
+                            case "Administratorius":
+                                insertRoleQuery = $"INSERT INTO Administratorius (naudotojo_id) VALUES ({newUserId});";
+                                    break;
+                            default:
+                                throw new ArgumentException("Invalid Profilio Tipas");
+                        }
+
+                        using (var command = new MySqlCommand(insertRoleQuery, connection))
                         {
                             command.ExecuteNonQuery();
                         }

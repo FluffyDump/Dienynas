@@ -77,4 +77,40 @@ public class TokenService
             return null;
         }
     }
+
+    public int? GetUserIdFromToken(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(_jwtSettings.SecretKey);
+
+        try
+        {
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = false,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = _jwtSettings.Issuer,
+                ValidAudience = _jwtSettings.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(key)
+            };
+
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+
+            if (validatedToken is JwtSecurityToken jwtToken)
+            {
+                var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
+                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    return userId;
+                }
+            }
+        }
+        catch
+        {
+            return null;
+        }
+        return null;
+    }
 }

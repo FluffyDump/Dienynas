@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Dienynas.Models
 {
-    public class Naudotojas 
+    public class Naudotojas : IdentityUser
     {
         public int naudotojo_id { get; set; }
 
@@ -16,6 +16,7 @@ namespace Dienynas.Models
         public string mokymo_istaigos_pavadinimas { get; set; }
         public string miestas { get; set; }
         public string adresas { get; set; }
+        public string profilio_tipas { get; set; }
 
         public string? profilio_nuotrauka { get; set; }
         public string? aprasymas { get; set; }

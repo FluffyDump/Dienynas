@@ -7,6 +7,7 @@
     <meta charset="utf-8" />
     <title>Registracija</title>
     <link rel="stylesheet" href="~/css/site.css" />
+
     <script>
         function validateForm() {
             const birthDateInput = document.querySelector("input[name='gimimo_data']");
@@ -22,54 +23,181 @@
     </script>
 </head>
 <body>
-    <h1>Registracijos Puslapis</h1>
+    <div class="register-container">
+        <button class="go-back-button" onclick="window.history.back()">←</button>
 
-    @if (Model?.Input == null)
-    {
-        <p>Error: Model or Input is null!</p>
-    }
+        <h1>Registracija</h1>
 
-    @if (!ModelState.IsValid)
-    {
-        <div style="color: red;">
-            <ul>
-                @foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    <li>@error.ErrorMessage</li>
-                }
-            </ul>
-        </div>
-    }
+        @if (Model?.Input == null)
+        {
+            <p>Error: Model or Input is null!</p>
+        }
 
-    <form method="post" onsubmit="return validateForm();">
-        <label>Vardas:</label>
-        <input type="text" name="vardas" required />
+        @if (!ModelState.IsValid)
+        {
+            <div class="error-message">
+                <ul>
+                    @foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
 
-        <label>Pavarde:</label>
-        <input type="text" name="pavarde" required />
+        <form method="post" onsubmit="return validateForm();">
+            <div class="form-row">
+                <div class="form-column">
+                    <label for="vardas">Vardas:</label>
+                    <input type="text" id="vardas" name="vardas" required />
 
-        <label>Slapyvardis:</label>
-        <input type="text" name="slapyvardis" required />
+                    <label for="slapyvardis">Slapyvardis:</label>
+                    <input type="text" id="slapyvardis" name="slapyvardis" required />
 
-        <label>Gimimo Data:</label>
-        <input type="date" name="gimimo_data" required />
+                    <label for="slaptazodis">Slaptažodis:</label>
+                    <input type="password" id="slaptazodis" name="slaptazodis" required />
 
-        <label>Elektroninis Paštas:</label>
-        <input type="email" name="elektroninis_pastas" required />
+                    <label for="mokymo_istaigos_pavadinimas">Mokymo Įstaigos Pavadinimas:</label>
+                    <input type="text" id="mokymo_istaigos_pavadinimas" name="mokymo_istaigos_pavadinimas" required />
 
-        <label>Slaptažodis:</label>
-        <input type="password" name="slaptazodis" required />
+                    <label for="gimimo_data">Gimimo Data:</label>
+                    <input type="date" id="gimimo_data" name="gimimo_data" required />
+                </div>
+                <div class="form-column">
+                    <label for="pavarde">Pavarde:</label>
+                    <input type="text" id="pavarde" name="pavarde" required />
 
-        <label>Mokymo Įstaigos Pavadinimas:</label>
-        <input type="text" name="mokymo_istaigos_pavadinimas" required />
+                    <label for="elektroninis_pastas">Elektroninis Paštas:</label>
+                    <input type="email" id="elektroninis_pastas" name="elektroninis_pastas" required />
 
-        <label>Miestas:</label>
-        <input type="text" name="miestas" required />
+                    <label for="miestas">Miestas:</label>
+                    <input type="text" id="miestas" name="miestas" required />
 
-        <label>Adresas:</label>
-        <input type="text" name="adresas" required />
+                    <label for="adresas">Adresas:</label>
+                    <input type="text" id="adresas" name="adresas" required />
 
-        <button type="submit">Register</button>
-    </form>
+                    <label for="profilio_tipas">Profilio Tipas:</label>
+                    <select id="profilio_tipas" name="profilio_tipas" required>
+                        <option value="Mokinys">Mokinys</option>
+                        <option value="Mokytojas">Mokytojas</option>
+                        <option value="Administratorius">Administratorius</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit">Registruotis</button>
+        </form>
+    </div>
 </body>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f7fc;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .register-container {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        width: 100%;
+        max-width: 600px;
+        position: relative;
+    }
+
+    h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    label {
+        font-size: 14px;
+        color: #333;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        transition: border-color 0.3s ease;
+    }
+
+    input:focus, select:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .error-message {
+        color: red;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    input[type="date"] {
+        padding-left: 10px;
+    }
+
+    .go-back-button {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        background-color: #ffffff;
+        color: #333;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+    }
+
+    .go-back-button:hover {
+        background-color: #bbb;
+    }
+
+    .form-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 100px;
+    }
+
+    .form-column {
+        width: 48%;
+    }
+</style>
 </html>

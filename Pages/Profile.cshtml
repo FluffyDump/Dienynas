@@ -1,4 +1,5 @@
 ﻿@page
+@model RazorPages.Pages.ProfileModel
 @{
     ViewData["Title"] = "Profilis";
 }
@@ -8,23 +9,121 @@
 <head>
     <meta charset="utf-8" />
     <title>Profilis</title>
-    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <h1>Profilio Peržiūra</h1>
-    <p>Informacija apie vartotoją</p>
-    <button onclick="window.location.href='/ProfileEdit'">Redaguoti Profilį</button>
-    <button onclick="window.location.href='/ChangePassword'">Keisti Slaptažodį</button>
-    <button onclick="window.location.href='/ChangeEmail'">Keisti El. Paštą</button>
-    <button onclick="window.location.href='/LoginHistory'">Prisijungimų Istorija</button>
+    <div class="profile-page">
+        <div class="profile-container">
+            <h1 class="head">Profilio Peržiūra</h1>
 
-    <div class="overlay" id="logoutOverlay" style="display: none;">
-        <div class="popup">
-            <p>Ar tikrai norite atsijungti?</p>
-            <button onclick="confirmLogout()">Taip</button>
-            <button onclick="hideLogout()">Ne</button>
+            <div class="profile-info">
+                <div class="profile-photo">
+                    <img src="@Model.Naudotojas.profilio_nuotrauka" alt="Profilio Nuotrauka">
+                </div>
+
+                <div>
+                    <div><label>Vardas:</label> <span>@Model.Naudotojas.vardas</span></div>
+                    <div><label>Pavardė:</label> <span>@Model.Naudotojas.pavarde</span></div>
+                    <div><label>Slapyvardis:</label> <span>@Model.Naudotojas.slapyvardis</span></div>
+                    <div><label>Aprašymas:</label> <span>@Model.Naudotojas.aprasymas</span></div>
+                    <div><label>Gimimo Data:</label> <span>@Model.Naudotojas.gimimo_data.ToShortDateString()</span></div>
+                    <div><label>Elektroninis Paštas:</label> <span>@Model.Naudotojas.elektroninis_pastas</span></div>
+                    <div><label>Mokymo Įstaiga:</label> <span>@Model.Naudotojas.mokymo_istaigos_pavadinimas</span></div>
+                    <div><label>Miestas:</label> <span>@Model.Naudotojas.miestas</span></div>
+                    <div><label>Adresas:</label> <span>@Model.Naudotojas.adresas</span></div>
+                    <div><label>Profilio Tipas:</label> <span>@Model.Naudotojas.profilio_tipas</span></div>
+                    <div><label>Vieša Kontaktinė Informacija:</label> <span>@Model.Naudotojas.viesa_kontaktine_informacija</span></div>
+                </div>
+            </div>
+
+            <div class="buttons-group">
+                <button onclick="window.location.href='/ProfileEdit'">Redaguoti Profilį</button>
+                <button onclick="window.location.href='/ChangePassword'">Keisti Slaptažodį</button>
+                <button onclick="window.location.href='/ChangeEmail'">Keisti El. Paštą</button>
+                <button onclick="window.location.href='/LoginHistory'">Prisijungimų Istorija</button>
+            </div>
         </div>
     </div>
 </body>
-<script src="~/js/site.js"></script>
+
+<style>
+    .profile-page {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: calc(100vh - 110px);
+        padding: 20px;
+    }
+
+    .profile-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 850px;
+        padding: 40px;
+    }
+
+    .head {
+        font-size: 28px;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .profile-info {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .profile-info label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .profile-info div {
+        margin-bottom: 10px;
+    }
+
+    .profile-photo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 150px;
+        width: 150px;
+        margin: 0 auto;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #f0f0f0;
+    }
+
+    .profile-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .buttons-group {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    button {
+        padding: 12px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
 </html>
