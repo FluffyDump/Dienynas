@@ -57,9 +57,9 @@ namespace RazorPages.Pages
                     {
                         isAuthenticated = PasswordHelper.VerifyPassword(Password, storedHashedPassword);
                     }
-
+                    
                     string insertLoginQuery = @"INSERT INTO Prisijungimas (sesijos_pradzios_laikas, naudotojas_autentifikuotas, 
-                    fk_Naudotojo_id) VALUES (IF(@isAuthenticated, NOW(), NULL), @isAuthenticated, @userId)";
+                    fk_Naudotojo_id) VALUES (ADDTIME(NOW(), '02:00:00'), @isAuthenticated, @userId)";
 
                     using (var command = new MySqlCommand(insertLoginQuery, connection))
                     {

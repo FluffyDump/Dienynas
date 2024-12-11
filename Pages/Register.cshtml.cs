@@ -81,7 +81,7 @@ namespace RazorPages.Pages
                             command.ExecuteNonQuery();
                         }
 
-                        string insertPrisijungimasQuery = $"INSERT INTO Prisijungimas (sesijos_pradzios_laikas, naudotojas_autentifikuotas, fk_Naudotojo_id) VALUES (NOW(), True, {newUserId})";
+                        string insertPrisijungimasQuery = $"INSERT INTO Prisijungimas (sesijos_pradzios_laikas, naudotojas_autentifikuotas, fk_Naudotojo_id) VALUES (ADDTIME(NOW(), '02:00:00'), True, {newUserId})";
                         using (var command = new MySqlCommand(insertPrisijungimasQuery, connection))
                         {
                             command.ExecuteNonQuery();

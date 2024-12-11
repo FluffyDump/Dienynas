@@ -1,7 +1,5 @@
 ﻿@page
-@{
-    ViewData["Title"] = "Profilis";
-}
+@model RazorPages.Pages.LoginHistoryModel
 
 <!DOCTYPE html>
 <html lang="lt">
@@ -11,12 +9,87 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <h1>Prisijungimų Istorija</h1>
-    <table>
-        <tr><th>Prisijungimo data</th><th>Prisijungimas sėkmingas</th></tr>
-        <tr><td>2024-11-09</td><td>Taip</td></tr>
-        <tr><td>2024-11-10</td><td>Ne</td></tr>
-    </table>
-    <!-- <button onclick="window.location.href='/Profile'">Atgal į Profilį</button> -->
+    <div class="login-history-page"></div>
+        <div class="history-container">
+            <h1 class="login-history">Paskutinių 15 Prisijungimų Istorija</h1>
+        
+            @if (Model.LoginHistory == null || !Model.LoginHistory.Any())
+            {
+                <p>Prisijungimų istorija nėra pasiekiama.</p>
+            }
+            else
+            {
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Prisijungimo bandymo data</th>
+                            <th>Prisijungimas sėkmingas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var login in Model.LoginHistory)
+                        {
+                            <tr>
+                                <td>@login.sesijos_pradzios_laikas.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                                <td>@(login.naudotojas_autentifikuotas ? "Taip" : "Ne")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
 </body>
+
+<style>
+    .login-history-page{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .history-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 850px;
+        padding: 40px;
+        margin: 0 auto;
+    }
+
+    .login-history {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    th {
+        background-color: #f4f7fc;
+        font-weight: bold;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    p {
+        color: red;
+        text-align: center;
+    }
+</style>
 </html>
