@@ -1,5 +1,4 @@
-﻿@* Pages/Shared/_Layout.cshtml *@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="lt">
 <head>
     <meta charset="utf-8" />
@@ -7,7 +6,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header class="main-header">
+    <header class="main-header" id="mainHeader">
         <h1>Mokinių dienynas</h1>
         <button class="message-button" onclick="window.location.href='/MessageList'">Žinutės</button>
         <button class="message-button" onclick="window.location.href='/Grades'">Pažymiai</button>
@@ -29,22 +28,27 @@
     </div>
 
     <script>
-        function confirmLogout() { 
-            console.log("confirmLogout called"); 
-            console.log("Cookies before deletion: ", document.cookie); 
-            document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; 
-            console.log("Cookies after deletion: ", document.cookie); 
-            window.location.href = '/Index'; 
-        }
-
-        function show2fa() {
-            document.getElementById("2faOverlay").style.display = "block";
-        }
-
-        function validate2fa(redirectUrl) {
-            if (document.getElementById("2faCode").value.trim()) {
-                window.location.href = redirectUrl;
+        function getCookie(name) {
+            let cookieArr = document.cookie.split(";");
+            for (let i = 0; i < cookieArr.length; i++) {
+                let cookiePair = cookieArr[i].split("=");
+                if (name == cookiePair[0].trim()) {
+                    return decodeURIComponent(cookiePair[1]);
+                }
             }
+            return null;
+        }
+
+        if (!getCookie("access_token")) {
+            document.getElementById("mainHeader").style.display = "none";
+        }
+
+        function confirmLogout() {
+            console.log("confirmLogout called");
+            console.log("Cookies before deletion: ", document.cookie);
+            document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            console.log("Cookies after deletion: ", document.cookie);
+            window.location.href = '/Index';
         }
 
         function showLogout() {
