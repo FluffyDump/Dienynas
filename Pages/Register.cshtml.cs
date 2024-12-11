@@ -8,8 +8,10 @@ namespace RazorPages.Pages
 {
     public class RegisterModel : PageModel
     {
-        public RegisterModel()
+        private readonly TokenService _tokenService;
+        public RegisterModel(TokenService tokenService)
         {
+            _tokenService = tokenService;
             Input = new Naudotojas();
         }
 
@@ -63,12 +65,15 @@ namespace RazorPages.Pages
                             command.ExecuteNonQuery();
                         }
 
-                        string insertPrisijungimasQuery = $"INSERT INTO Prisijungimas (sesijos_pradzios_laikas, sesijos_pabaigos_laikas, naudotojas_autentifikuotas, fk_Naudotojo_id) VALUES (NOW(), DATE_ADD(NOW(), INTERVAL 1 HOUR), True, {newUserId})";
+                        string insertPrisijungimasQuery = $"INSERT INTO Prisijungimas (sesijos_pradzios_laikas, naudotojas_autentifikuotas, fk_Naudotojo_id) VALUES (NOW(), True, {newUserId})";
                         using (var command = new MySqlCommand(insertPrisijungimasQuery, connection))
                         {
                             command.ExecuteNonQuery();
                         }
-                        
+
+                        var token = _tokenService.GenerateToken(newUserId);
+                        HttpContext.Response.Cookies.Append("access_token", token);
+
                         return RedirectToPage("/Profile");
                     }
                 }
@@ -92,7 +97,6 @@ namespace RazorPages.Pages
             {
                 ModelState.AddModelError(string.Empty, "Įvyko serverio klaida!" + ex.Message);
             }
-
             return Page();
         }
     }

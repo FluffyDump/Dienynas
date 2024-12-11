@@ -28,6 +28,36 @@
         </div>
     </div>
 
-    <script src="~/js/site.js"></script>
+    <script>
+        function confirmLogout() { 
+            console.log("confirmLogout called"); 
+            console.log("Cookies before deletion: ", document.cookie); 
+            document.cookie = "access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; 
+            console.log("Cookies after deletion: ", document.cookie); 
+            window.location.href = '/Index'; 
+        }
+
+        function show2fa() {
+            document.getElementById("2faOverlay").style.display = "block";
+        }
+
+        function validate2fa(redirectUrl) {
+            if (document.getElementById("2faCode").value.trim()) {
+                window.location.href = redirectUrl;
+            }
+        }
+
+        function showLogout() {
+            document.getElementById("logoutOverlay").style.display = "block";
+        }
+
+        function hideLogout() {
+            document.getElementById("logoutOverlay").style.display = "none";
+        }
+
+        function saveAndRedirect() {
+            window.location.href = '/Profile';
+        }
+    </script>
 </body>
 </html>

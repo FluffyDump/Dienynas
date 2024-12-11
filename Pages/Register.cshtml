@@ -24,13 +24,11 @@
 <body>
     <h1>Registracijos Puslapis</h1>
 
-    <!-- Check if Model.Input is null -->
     @if (Model?.Input == null)
     {
         <p>Error: Model or Input is null!</p>
     }
 
-    <!-- Display any ModelState errors -->
     @if (!ModelState.IsValid)
     {
         <div style="color: red;">
@@ -73,6 +71,5 @@
 
         <button type="submit">Register</button>
     </form>
-
 </body>
 </html>
