@@ -25,6 +25,12 @@ namespace RazorPages.Pages
                 return Page();
             }
 
+            if (Input.slaptazodis.Length < 6)
+            {
+                ModelState.AddModelError("", "Slaptažodis turi būti sudarytas iš bent 6 simbolių!");
+                return Page();
+            }
+
             string hashedPassword = PasswordHelper.HashPassword(Input.slaptazodis);
 
             var user = new Naudotojas

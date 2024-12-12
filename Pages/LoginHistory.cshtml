@@ -15,7 +15,7 @@
         
             @if (Model.LoginHistory == null || !Model.LoginHistory.Any())
             {
-                <p>Prisijungimų istorija nėra pasiekiama.</p>
+                <p class="login-history-p">Prisijungimų istorija nėra pasiekiama.</p>
             }
             else
             {
@@ -87,7 +87,7 @@
         background-color: #f1f1f1;
     }
 
-    p {
+    .login-history-p {
         color: red;
         text-align: center;
     }
