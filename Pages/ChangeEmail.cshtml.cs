@@ -55,7 +55,7 @@ namespace RazorPages.Pages
             {
                 using (var connection = DatabaseHelper.GetConnection())
                 {
-                    connection.Open();
+                    await connection.OpenAsync();
 
                     string checkEmailQuery = "SELECT COUNT(*) FROM Naudotojas WHERE elektroninis_pastas = @newEmail AND naudotojo_id != @userId";
                     using (var checkEmailCommand = new MySqlCommand(checkEmailQuery, connection))
@@ -78,7 +78,7 @@ namespace RazorPages.Pages
                         INSERT INTO Dvieju_faktoriu_autentifikacija 
                             (patvirtinimo_kodas, kodo_issiuntimo_laikas, kodo_galiojimo_laikas, fk_Naudotojo_id) 
                         VALUES 
-                            (@code, DATE_ADD(NOW(), INTERVAL 2 HOUR), DATE_ADD(DATE_ADD(NOW(), INTERVAL 2 HOUR), INTERVAL 1 MINUTE), @userId)";
+                            (@code, DATE_ADD(NOW(), INTERVAL 2 HOUR), DATE_ADD(DATE_ADD(NOW(), INTERVAL 2 HOUR), INTERVAL 15 MINUTE), @userId)";
 
                     using (var saveCodeCommand = new MySqlCommand(saveCodeQuery, connection))
                     {
