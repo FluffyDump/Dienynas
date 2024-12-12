@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Dienynas.Models;
 using MySql.Data.MySqlClient;
 using System;
-
+using System.IO;
 
 namespace RazorPages.Pages
 {
@@ -47,7 +47,6 @@ namespace RazorPages.Pages
                         {
                             if (reader.Read())
                             {
-
                                 Naudotojas = new Naudotojas
                                 {
                                     vardas = reader["vardas"]?.ToString() ?? "-",
@@ -58,9 +57,7 @@ namespace RazorPages.Pages
                                     elektroninis_pastas = reader["elektroninis_pastas"]?.ToString() ?? "-",
                                     mokymo_istaigos_pavadinimas = reader["mokymo_istaigos_pavadinimas"]?.ToString() ?? "-",
                                     miestas = reader["miestas"]?.ToString() ?? "-",
-                                    adresas = reader["adresas"]?.ToString() ?? "-",
-                                    viesa_kontaktine_informacija = reader["viesa_kontaktine_informacija"]?.ToString() ?? "-",
-                                    profilio_nuotrauka = "/Images/user_default.png"
+                                    adresas = reader["adresas"]?.ToString() ?? "-"
                                 };
                             }
                             else
@@ -86,6 +83,16 @@ namespace RazorPages.Pages
                         var role = roleCommand.ExecuteScalar()?.ToString();
 
                         Naudotojas.profilio_tipas = role ?? "-";
+                    }
+
+                    var profileImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", $"{userId}.png");
+                    if (System.IO.File.Exists(profileImagePath))
+                    {
+                        Naudotojas.profilio_nuotrauka = $"/Images/{userId}.png";
+                    }
+                    else
+                    {
+                        Naudotojas.profilio_nuotrauka = "/Images/user_default.png";
                     }
                 }
             }

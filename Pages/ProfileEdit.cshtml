@@ -1,6 +1,7 @@
 ﻿@page
+@model RazorPages.Pages.EditProfileModel
 @{
-    ViewData["Title"] = "Profilis";
+    ViewData["Title"] = "Redaguoti Profilį";
 }
 
 <!DOCTYPE html>
@@ -11,22 +12,176 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <h1>Redaguoti Profilį</h1>
-    <form onsubmit="event.preventDefault(); saveAndRedirect();">
-        <label>Dabartinis vartotojo vardas:</label>
-        <p>Vartotojo_vardas</p>
-        <br />
-        <label>Dabartinis vartotojo aprašymas:</label>
-        <p>Vartotojo_aprašymas</p>
-        <br />
-        <label>Naujas vartotojo vardas:</label>
-        <input type="text">
-        <br />
-        <label>Naujas vartotojo aprašymas:</label>
-        <input type="text">
-        <br />
-        <button type="submit">Išsaugoti</button>
-    </form>
+    <div class="edit-profile-page">
+        <div class="profile-container">
+            <h1 class="Profile-edit-h1">Redaguoti Profilį</h1>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="error-messages">
+                    <ul>
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Dabartinis vartotojo vardas:</label>
+                    <p>@Model.CurrentUsername</p>
+                </div>
+                <div class="form-group">
+                    <label>Dabartinis vartotojo aprašymas:</label>
+                    <p>@Model.CurrentDescription</p>
+                </div>
+                <div class="form-group">
+                    <label>Naujas vartotojo vardas:</label>
+                    <input type="text" name="NewUsername" placeholder="Įveskite naują vartotojo vardą" />
+                </div>
+                <div class="form-group">
+                    <label>Naujas vartotojo aprašymas:</label>
+                    <textarea name="NewDescription" placeholder="Įveskite naują vartotojo aprašymą"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Atnaujinti profilio nuotrauką:</label>
+                    <div class="custom-file-upload">
+                        <input type="file" name="ProfilePicture" accept=".png" id="file-upload" />
+                        <label for="file-upload" class="file-upload-label">
+                            <span id="file-upload-text">Pasirinkite failą (tik .png)</span>
+                        </label>
+                    </div>
+                </div>
+                <button type="submit" class="btn-save">Išsaugoti</button>
+            </form>
+        </div>
+    </div>
 </body>
-<script src="~/js/site.js"></script>
+
+<style>
+    .edit-profile-page {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .profile-container {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+        padding: 40px;
+    }
+
+    .Profile-edit-h1 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .error-messages {
+        margin-bottom: 20px;
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 10px;
+        border: 1px solid #f5c6cb;
+        border-radius: 4px;
+    }
+
+    .error-messages ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .error-messages li {
+        margin: 5px 0;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"], textarea, input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .btn-save {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .btn-save:hover {
+        background-color: #0056b3;
+    }
+
+    .custom-file-upload {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .custom-file-upload input[type="file"] {
+        position: absolute;
+        opacity: 0;
+        right: 0;
+        top: 0;
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+    }
+
+    .file-upload-label {
+        display: block;
+        width: 60%;
+        padding: 10px;
+        font-size: 16px;
+        color: #007bff;
+        border: 2px dashed #007bff;
+        border-radius: 4px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .file-upload-label:hover {
+        background-color: #007bff;
+        color: white;
+    }
+</style>
+
+<script>
+    document.getElementById('file-upload').addEventListener('change', function() {
+        var fileName = this.files[0].name;
+        document.getElementById('file-upload-text').textContent = fileName;
+    });
+</script>
 </html>

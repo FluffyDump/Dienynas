@@ -38,12 +38,10 @@ namespace RazorPages.Pages
                 mokymo_istaigos_pavadinimas = Input.mokymo_istaigos_pavadinimas,
                 miestas = Input.miestas,
                 adresas = Input.adresas,
-                profilio_nuotrauka = Input.profilio_nuotrauka,
-                aprasymas = Input.aprasymas,
-                viesa_kontaktine_informacija = Input.viesa_kontaktine_informacija
+                aprasymas = Input.aprasymas
             };
 
-            string insertUserQuery = $"INSERT INTO Naudotojas (slapyvardis, elektroninis_pastas, slaptazodis, vardas, pavarde, gimimo_data, mokymo_istaigos_pavadinimas, miestas, adresas, profilio_nuotrauka, aprasymas, viesa_kontaktine_informacija) VALUES ('{user.slapyvardis}', '{user.elektroninis_pastas}', '{user.slaptazodis}', '{user.vardas}', '{user.pavarde}', '{user.gimimo_data:yyyy-MM-dd}', '{user.mokymo_istaigos_pavadinimas}', '{user.miestas}', '{user.adresas}', '{user.profilio_nuotrauka}', '{user.aprasymas}', '{user.viesa_kontaktine_informacija}'); SELECT LAST_INSERT_ID();";
+            string insertUserQuery = $"INSERT INTO Naudotojas (slapyvardis, elektroninis_pastas, slaptazodis, vardas, pavarde, gimimo_data, mokymo_istaigos_pavadinimas, miestas, adresas, aprasymas) VALUES ('{user.slapyvardis}', '{user.elektroninis_pastas}', '{user.slaptazodis}', '{user.vardas}', '{user.pavarde}', '{user.gimimo_data:yyyy-MM-dd}', '{user.mokymo_istaigos_pavadinimas}', '{user.miestas}', '{user.adresas}', '{user.aprasymas}'); SELECT LAST_INSERT_ID();";
 
             try
             {

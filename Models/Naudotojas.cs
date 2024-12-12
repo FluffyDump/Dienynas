@@ -20,6 +20,5 @@ namespace Dienynas.Models
 
         public string? profilio_nuotrauka { get; set; }
         public string? aprasymas { get; set; }
-        public string? viesa_kontaktine_informacija { get; set; }
     }
 }
