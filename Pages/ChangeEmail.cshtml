@@ -37,21 +37,26 @@
             <form id="changeEmailForm" method="post" onsubmit="return validateForm()">
                 <div class="form-group">
                     <label class="change-email-lbl" for="NewEmail">Naujas elektroninis pašto adresas:</label>
-                    <input class="change-email-input" type="email" id="NewEmail" name="NewEmail" required />
+                    <input class="change-email-input" type="email" id="NewEmail" name="NewEmail" value="@Model.NewEmail" required />
                 </div>
 
                 <button class="change-email-btn" type="submit">Išsaugoti</button>
+
+                <input type="hidden" id="TwoFACode" name="TwoFACode" value="" />
             </form>
 
-            <div class="overlay" id="2faOverlay" style="display: none;">
-                <div class="change-email-popup">
-                    <h2>2FA Patvirtinimas</h2>
-                    <label class="change-email-lbl" for="2faCode">Įveskite el. pašte gautą 2FA kodą:</label>
-                    <input class="change-email-input" type="text" id="2faCode" name="2faCode" required />
-                    <br />
-                    <button onclick="validate2fa('/Profile')">Patvirtinti</button>
+            @if (TempData["TwoFACodeSent"] != null && (bool)TempData["TwoFACodeSent"])
+            {
+                <div class="overlay" id="2faOverlay" style="display: flex;">
+                    <div class="change-email-popup">
+                        <h2>2FA Patvirtinimas</h2>
+                        <label class="change-email-lbl" for="2faCode">Įveskite el. pašte gautą 2FA kodą:</label>
+                        <input class="change-email-input" type="text" id="2faCodeInput" name="TwoFACode" required />
+                        <br />
+                        <button type="button" onclick="submit2fa()">Patvirtinti</button>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     </div>
 </body>
@@ -69,16 +74,33 @@
         return false;
     }
 
-    function validate2fa(redirectUrl) {
-        const twoFACode = document.getElementById("2faCode").value.trim();
+    function submit2fa() {
+        const twoFACode = document.getElementById("2faCodeInput").value.trim();
 
         if (twoFACode) {
-            document.getElementById("changeEmailForm").submit();
-            document.getElementById("2faOverlay").style.display = "none";
-        } else {
-            alert("Prašome įvesti 2FA kodą.");
-        }
+            const newEmail = document.getElementById("NewEmail").value;
+
+            fetch("/ChangeEmail?handler=Verify2FACode", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": document.querySelector('[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({ TwoFACode: twoFACode, NewEmail: newEmail })
+            }).then(response => response.json()).then(result => {
+            if (result.success) {
+                window.location.href = "/Profile";
+            } else {
+                alert(result.message || "Patvirtinimas nepavyko, bandykite dar kartą!");
+            }
+        })
+        .catch(error => {
+            alert("Patvirtinimas nepavyko, bandykite dar kartą!");
+        });
+    } else {
+        alert("Prašome įvesti 2FA kodą.");
     }
+}
 </script>
 
 <style>

@@ -12,6 +12,7 @@ builder.Services.AddRazorPages();
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSettings"));
 
 builder.Services.AddSingleton<TokenService>();
+builder.Services.AddScoped<EmailService>();
 
 var jwtSettings = builder.Configuration.GetSection("JWTSettings").Get<JWTSettings>();
 var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
