@@ -6,22 +6,8 @@
 <head>
     <meta charset="utf-8" />
     <title>Registracija</title>
-    <link rel="stylesheet" href="~/css/site.css" />
-
-    <script>
-        function validateForm() {
-            const birthDateInput = document.querySelector("input[name='gimimo_data']");
-            const birthDate = new Date(birthDateInput.value);
-            const today = new Date();
-            
-            if (birthDate > today) {
-                alert("Gimimo data negali būti ateityje!");
-                return false;
-            }
-            return true;
-        }
-    </script>
 </head>
+
 <body>
     <div class="register-container">
         <button class="go-back-button" onclick="window.history.back()">←</button>
@@ -85,9 +71,71 @@
                 </div>
             </div>
             <button type="submit">Registruotis</button>
+
+            <input type="hidden" id="TwoFACode" name="TwoFACode" value="" />
+            <input type="hidden" id="RegistrationAttemptId" name="RegistrationAttemptId" value="@Model.RegistrationAttemptId" />
+            <input type="hidden" id="SessionAttemptId" name="SessionAttemptId" value="@Model.SessionAttemptId" />
         </form>
+
+        @if (TempData["TwoFACodeSent"] != null && (bool)TempData["TwoFACodeSent"])
+        {
+            <div class="overlay" id="2faOverlay" style="display: flex;">
+                <div class="register-popup">
+                    <h2>2FA Patvirtinimas</h2>
+                    <label class="register-lbl" for="2faCode">Įveskite el. pašte gautą 2FA kodą:</label>
+                    <input class="register-input" type="text" id="2faCodeInput" name="TwoFACode" required />
+                    <br />
+                    <button type="button" onclick="submit2fa()">Patvirtinti</button>
+                </div>
+            </div>
+        }
     </div>
 </body>
+
+<script>
+    function validateForm() {
+        const birthDateInput = document.querySelector("input[name='gimimo_data']");
+        const birthDate = new Date(birthDateInput.value);
+        const today = new Date();
+            
+        if (birthDate > today) {
+            alert("Gimimo data negali būti ateityje!");
+            return false;
+        }
+        return true;
+    }
+
+    function submit2fa() {
+        const twoFACode = document.getElementById("2faCodeInput").value.trim();
+
+        if (twoFACode) {
+            const registrationAttemptId = document.getElementById("RegistrationAttemptId").value;
+            const sessionAttemptId = document.getElementById("SessionAttemptId").value;
+
+            fetch("/Register?handler=Verify2FACode", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": document.querySelector('[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({ TwoFACode: twoFACode, 
+                                        RegistrationAttemptId: registrationAttemptId,
+                                        SessionAttemptId: sessionAttemptId })
+            }).then(response => response.json()).then(result => {
+            if (result.success) {
+                window.location.href = "/Profile";
+            } else {
+                alert(result.message || "Patvirtinimas nepavyko, bandykite dar kartą!");
+            }
+        })
+        .catch(error => {
+            alert("Patvirtinimas nepavyko, bandykite dar kartą!");
+        });
+    } else {
+        alert("Prašome įvesti 2FA kodą.");
+    }
+}
+</script>
 
 <style>
     body {
@@ -116,6 +164,61 @@
         color: #333;
         margin-bottom: 20px;
         text-align: center;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .register-input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+
+    .register-lbl {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .register-popup {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 300px;
+        text-align: center;
+    }
+
+    .register-popup input[type="text"] {
+        width: 70%;
+        margin-bottom: 10px;
+    }
+
+    .register-popup button {
+        width: 70%;
+        padding: 12px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .register-popup button:hover {
+        background-color: #218838;
     }
 
     label {
