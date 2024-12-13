@@ -7,6 +7,7 @@ appsettings.json
 wwwroot/Images/21.png
 wwwroot/Images/34.png
 Models/Utils/EmailService.cs
+Models/Utils/DatabaseConn.cs
 
 # User-specific files
 *.rsuser
