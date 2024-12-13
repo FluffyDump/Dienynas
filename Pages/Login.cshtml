@@ -9,7 +9,6 @@
 <head>
     <meta charset="utf-8" />
     <title>Prisijungimas</title>
-    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <div class="login-container">
@@ -31,36 +30,70 @@
 
         <form method="post">
             <label for="UsernameOrEmail">Vartotojo vardas arba el. pašto adresas:</label>
-            <input type="text" id="UsernameOrEmail" name="UsernameOrEmail" required />
+            <input type="text" id="UsernameOrEmail" name="UsernameOrEmail" value="@Model.UsernameOrEmail" required />
 
             <label for="Password">Slaptažodis:</label>
-            <input type="password" id="Password" name="Password" required />
+            <input type="password" id="Password" name="Password" value="@Model.Password" required />
 
             <button type="submit">Prisijungti</button>
         </form>
-    </div>
 
-    <div class="overlay" id="2faOverlay">
-        <div class="popup">
-            <label for="2faCode">2FA Kodas:</label>
-            <input type="text" id="2faCode" />
+        @if (TempData["TwoFACodeSent"] != null && (bool)TempData["TwoFACodeSent"])
+            {
+                <div class="overlay" id="2faOverlay" style="display: flex;">
+                    <div class="login-popup">
+                        <h2>2FA Patvirtinimas</h2>
+                        <label class="login-lbl" for="2faCode">Įveskite el. pašte gautą 2FA kodą:</label>
+                        <input class="login-input" type="text" id="2faCodeInput" name="TwoFACode" required />
+                        <br />
+                        <button type="button" onclick="submit2fa()">Patvirtinti</button>
 
-            <button onclick="validate2fa('/Profile')">Patvirtinti</button>
-        </div>
-    </div>
-
-    <script>
-        function show2fa() {
-            document.getElementById("2faOverlay").style.display = "flex";
-        }
-
-        function validate2fa(redirectUrl) {
-            if (document.getElementById("2faCode").value.trim()) {
-                window.location.href = redirectUrl;
+                        <input type="hidden" id="TwoFACode" name="TwoFACode" value="" />
+                        <input type="hidden" id="LoginAttemptId" name="LoginAttemptId" value="@Model.LoginAttemptId" />
+                    </div>
+                </div>
             }
-        }
-    </script>
+    </div>
 </body>
+
+<script>
+    function show2fa() {
+        document.getElementById("2faOverlay").style.display = "flex";
+    }
+
+    function submit2fa() {
+        const twoFACode = document.getElementById("2faCodeInput").value.trim();
+
+        if (twoFACode) {
+            const usernameOrEmail = document.getElementById("UsernameOrEmail").value;
+            const password = document.getElementById("Password").value;
+            const loginAttemptId = document.getElementById("LoginAttemptId").value;
+
+            fetch("/Login?handler=Verify2FACode", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": document.querySelector('[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({ TwoFACode: twoFACode, 
+                                        UsernameOrEmail: usernameOrEmail, 
+                                        Password: password, 
+                                        LoginAttemptId: loginAttemptId })
+            }).then(response => response.json()).then(result => {
+            if (result.success) {
+                window.location.href = "/Profile";
+            } else {
+                alert(result.message || "Patvirtinimas nepavyko, bandykite dar kartą!");
+            }
+        })
+        .catch(error => {
+            alert("Patvirtinimas nepavyko, bandykite dar kartą!");
+        });
+    } else {
+        alert("Prašome įvesti 2FA kodą.");
+    }
+}
+</script>
 
 <style>
     body {
@@ -98,6 +131,12 @@
         margin-bottom: 8px;
     }
 
+    .login-lbl {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
     input {
         width: 93%;
         padding: 12px;
@@ -107,6 +146,15 @@
         border-radius: 4px;
         background-color: #f9f9f9;
         transition: border-color 0.3s ease;
+    }
+
+    .login-input[type="text"] {
+        width: 90%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
     }
 
     input:focus {
@@ -140,15 +188,15 @@
         position: fixed;
         top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
+        width: 100%;
+        height: 100%;
         background: rgba(0, 0, 0, 0.5);
-        display: none;
+        display: flex;
         justify-content: center;
         align-items: center;
     }
 
-    .popup {
+    .login-popup {
         background: white;
         border-radius: 8px;
         padding: 20px;
@@ -156,14 +204,14 @@
         width: 300px;
     }
 
-    .popup input {
+    .login-popup input {
         width: 100%;
         padding: 12px;
         font-size: 16px;
         margin-bottom: 20px;
     }
 
-    .popup button {
+    .login-popup button {
         width: 100%;
         padding: 12px;
         font-size: 16px;
@@ -174,7 +222,7 @@
         cursor: pointer;
     }
 
-    .popup button:hover {
+    .login-popup button:hover {
         background-color: #218838;
     }
 
