@@ -68,8 +68,7 @@ namespace RazorPages.Pages
                     if (!string.IsNullOrEmpty(FilterUsername))
                     {
                         var filteredUserIds = Naudotojai
-                            .Where(n => n.Value.vardas.Contains(FilterUsername, StringComparison.OrdinalIgnoreCase) ||
-                                        n.Value.pavarde.Contains(FilterUsername, StringComparison.OrdinalIgnoreCase))
+                            .Where(n => n.Value.slapyvardis.Equals(FilterUsername, StringComparison.OrdinalIgnoreCase))
                             .Select(n => n.Key)
                             .ToHashSet();
 
@@ -113,7 +112,8 @@ namespace RazorPages.Pages
             SELECT DISTINCT 
                 n.naudotojo_id, 
                 n.vardas, 
-                n.pavarde
+                n.pavarde,
+                n.slapyvardis
             FROM Naudotojas n
             JOIN Zinute z ON z.fk_Siuntejo_id = n.naudotojo_id
             WHERE z.fk_Gavejo_id = @userId";
@@ -130,7 +130,8 @@ namespace RazorPages.Pages
                         {
                             naudotojo_id = Convert.ToInt32(usersReader["naudotojo_id"]),
                             vardas = usersReader["vardas"]?.ToString(),
-                            pavarde = usersReader["pavarde"]?.ToString()
+                            pavarde = usersReader["pavarde"]?.ToString(),
+                            slapyvardis = usersReader["slapyvardis"]?.ToString()
                         };
 
                         Naudotojai[naudotojas.naudotojo_id] = naudotojas;
