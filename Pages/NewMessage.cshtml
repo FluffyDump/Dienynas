@@ -1,46 +1,153 @@
 ﻿@page
+@model RazorPages.Pages.NewMessageModel
 @{
     ViewData["Title"] = "Nauja Žinutė";
 }
 
-<!DOCTYPE html>
-<html lang="lt">
-<head>
-    <meta charset="utf-8" />
-    <title>Nauja Žinutė</title>
-    <link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
-    <h1>Parašyti Naują Žinutę</h1>
+<div class="container">
+    <h1 class="my-4">Parašyti Naują Žinutę</h1>
 
-    <!-- Form starts here -->
-    <form id="newMessageForm">
+    @if (!ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <p>Prašome ištaisyti šias klaidas:</p>
+            <ul>
+                @foreach (var modelState in ModelState.Values)
+                {
+                    @foreach (var error in modelState.Errors)
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+
+    <form method="post" id="newMessageForm" novalidate>
+        @if (Model.IsTeacher)
+        {
+            <div class="form-group">
+                <div class="form-check mb-3">
+                    <input asp-for="SendToClass" type="checkbox" class="form-check-input" id="sendToClassCheckbox" />
+                    <label asp-for="SendToClass" class="form-check-label">Siųsti visai klasei</label>
+                </div>
+            </div>
+        }
+
+        <div id="recipientUsernameGroup" class="form-group">
+            <label asp-for="RecipientUsername">Gavėjo Vartotojo Vardas:</label>
+            <input asp-for="RecipientUsername" class="form-control" placeholder="Įveskite gavėjo vartotojo vardą" />
+            <span asp-validation-for="RecipientUsername" class="text-danger"></span>
+        </div>
+
+        @if (Model.IsTeacher)
+        {
+            <div id="classSelectionGroup" class="form-group" style="display:none;">
+                <label asp-for="SelectedClassId">Pasirinkite klasę:</label>
+                <select asp-for="SelectedClassId" class="form-control">
+                    <option value="">-- Pasirinkite klasę --</option>
+                    @foreach (var classInfo in Model.AvailableClasses)
+                    {
+                        <option value="@classInfo.klases_id">@classInfo.pavadinimas</option>
+                    }
+                </select>
+                <span asp-validation-for="SelectedClassId" class="text-danger"></span>
+            </div>
+        }
+
         <div class="form-group">
-            <label for="recipient">Siuntėjas (Vartotojo vardas):</label>
-            <input type="text" id="recipient" name="recipient" required />
+            <label asp-for="Title">Žinutės Pavadinimas:</label>
+            <input asp-for="Title" class="form-control" placeholder="Įveskite žinutės pavadinimą" />
+            <span asp-validation-for="Title" class="text-danger"></span>
         </div>
 
         <div class="form-group">
-            <label for="title">Žinutės Pavadinimas:</label>
-            <input type="text" id="title" name="title" required />
+            <label asp-for="MessageBody">Žinutės Turinys:</label>
+            <textarea asp-for="MessageBody" class="form-control non-resizable-textarea" rows="5" placeholder="Įveskite žinutės turinį"></textarea>
+            <span asp-validation-for="MessageBody" class="text-danger"></span>
         </div>
 
-        <div class="form-group">
-            <label for="messageBody">Žinutės Turinys:</label>
-            <textarea id="messageBody" name="messageBody" rows="5" required></textarea>
-        </div>
-
-        <button type="submit" class="message-button">Siųsti Žinutę</button>
+        <button type="submit" class="btn btn-primary">Siųsti Žinutę</button>
     </form>
+</div>
 
-    <script>
-        document.getElementById('newMessageForm').addEventListener('submit', function (event) {
-            event.preventDefault();
+<style>
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-            window.location.href = '/MessageList'; 
-        });
-    </script>
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 8px;
+        display: block;
+    }
 
-    <script src="~/js/site.js"></script>
-</body>
-</html>
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .non-resizable-textarea {
+        resize: none;
+    }
+
+    .btn {
+        display: inline-block;
+        width: 100%;
+        padding: 10px 15px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        transition: background-color 0.2s ease-in-out;
+    }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+    .alert {
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .alert-danger {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+
+    .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+    }
+</style>
+
+<script>
+    document.getElementById("sendToClassCheckbox")?.addEventListener("change", function () {
+        var recipientUsernameGroup = document.getElementById("recipientUsernameGroup");
+        var classSelectionGroup = document.getElementById("classSelectionGroup");
+
+        if (this.checked) {
+            recipientUsernameGroup.style.display = "none";
+            classSelectionGroup.style.display = "block";
+        } else {
+            recipientUsernameGroup.style.display = "block";
+            classSelectionGroup.style.display = "none";
+        }
+    });
+</script>

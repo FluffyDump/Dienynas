@@ -1,4 +1,5 @@
 ﻿@page "{messageId:int}"
+@model RazorPages.Pages.MessageModel
 @{
     ViewData["Title"] = "Žinutės Detalės";
     var messageId = RouteData.Values["messageId"];
@@ -10,17 +11,113 @@
     <meta charset="utf-8" />
     <title>Žinutės Detalės</title>
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-top: 20px;
+            font-size: 2em;
+        }
+
+        .message-details {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            .message-details p {
+                font-size: 1.1em;
+                color: #333;
+                line-height: 1.6;
+                margin: 10px 0;
+            }
+
+            .message-details .label {
+                font-weight: bold;
+                color: #007bff;
+            }
+
+            .message-details .value {
+                font-weight: normal;
+                color: #555;
+            }
+
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+            .back-button:hover {
+                background-color: #218838;
+            }
+
+        .message-body {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f1f1f1;
+            border-left: 4px solid #007bff;
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .message-details hr {
+            border: 0;
+            border-top: 1px solid #ddd;
+            margin: 20px 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Žinutės Peržiūra</h1>
+    <h1>Žinutės Detalės</h1>
 
     <div class="message-details">
-        <p><strong>Siuntėjas:</strong> <span>Jonas</span></p>
-        <p><strong>Data:</strong> <span>2024-11-11</span></p>
-        <p><strong>Žinutė:</strong> <span>Ši žinutė yra testinė. Ji rodo, kaip atrodytų pilna žinutė, įskaitant siuntėją, datą ir turinį.</span></p>
+         <p><span class="label">Siuntėjas:</span> <span class="value">@Model.SenderName</span></p>
+         <p><span class="label">Data:</span> <span class="value">@Model.MessageDate.ToString("yyyy-MM-dd HH:mm")</span></p>
+         <p><span class="label">Prioritetas:</span> 
+            <form method="post" asp-page-handler="ChangePriority" class="priority-form">
+            <select name="newPriority" asp-for="Priority">
+                <option value="Aukstas" selection=@(Model.Priority == Models.Priotitetas.Aukstas ? "selected" : "")>Aukštas</option>
+                <option value="Vidutinis" selection=@(Model.Priority == Models.Priotitetas.Vidutinis ? "selected" : "")>Vidutinis</option>
+                <option value="Zemas" selection=@(Model.Priority == Models.Priotitetas.Zemas ? "selected" : "")>Žemas</option>
+            </select>
+            <input type="hidden" name="messageId" value="@RouteData.Values["messageId"]" />
+            <button type="submit" class="back-button">Keisti</button>
+        </form>
+        </p>
+        <hr />
+    <div class="message-body">
+        <p><span class="label">Žinutės Turinys:</span></p>
+        <p class="value">@Model.MessageBody</p>
+    </div>
     </div>
 
-    <button onclick="window.location.href='/MessageList'">Grįžti į žinučių sąrašą</button>
+
+    <div class="button-container">
+        <button class="back-button" onclick="window.location.href='/MessageList'">Grįžti į žinučių sąrašą</button>
+    </div>
 
     <script src="~/js/site.js"></script>
 </body>

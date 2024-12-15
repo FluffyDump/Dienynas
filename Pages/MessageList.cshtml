@@ -1,44 +1,158 @@
 ﻿@page
+@model RazorPages.Pages.MessageListModel
 @{
     ViewData["Title"] = "Žinutės Sąrašas";
 }
-
 <!DOCTYPE html>
 <html lang="lt">
 <head>
     <meta charset="utf-8" />
     <title>Žinutės Sąrašas</title>
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.2em;
+            color: #6c757d;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        td {
+            font-size: 1.1em;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        .bold-message {
+            font-weight: bold;
+        }
+
+        .filter-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+            .filter-container input, .filter-container select, .filter-container button {
+                margin: 5px;
+                padding: 10px;
+                font-size: 1em;
+            }
+    </style>
 </head>
 <body>
     <h1>Žinučių Sąrašas</h1>
     <p>Visos gautos žinutės</p>
+    <div class="button-container">
+        <button onclick="window.location.href='/NewMessage'">Parašyti žinutę</button>
+        <button onclick="window.location.href='/MessageArchive'">Archyvuoti žinutę</button>
+    </div>
+    <
+    <div class="filter-container">
+        <form method="get">
+            <input type="text" name="filterUsername" placeholder="Filtruoti pagal siuntėjo vardą" value="@Model.FilterUsername" />
 
-    <button onclick="window.location.href='/NewMessage'">Parašyti žinutę</button>
-    <button onclick="window.location.href='/MessageArchive'">Archyvuoti žinutę</button>
-    <table class="message-table">
+            <select name="filterPrioritetas" asp-for="FilterPrioritetas">
+                <option value="">Visi prioritetai</option>
+                <option value="Aukstas" selected="@Model.IsSelectedPriority("Aukstas")">Aukštas</option>
+                <option value="Vidutinis" selected="@Model.IsSelectedPriority("Vidutinis")">Vidutinis</option>
+                <option value="Zemas" selected="@Model.IsSelectedPriority("Zemas")">Žemas</option>
+            </select>
+
+            <select name="sortOrder">
+                <option value="desc" selected="@(Model.SortOrder == "desc" ? "selected" : "")">Naujausios pirmos</option>
+                <option value="asc" selected="@(Model.SortOrder == "asc" ? "selected" : "")">Seniausios pirmos</option>
+            </select>
+
+            <button type="submit">Taikyti</button>
+        </form>
+    </div>
+
+
+    <table>
         <thead>
             <tr>
                 <th>Siuntėjas</th>
-                <th>Žinutės Pavadinimas</th>
+                <th>Data</th>
+                <th>Žinutės pavadinimas</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Jonas</td>
-                <td><a href="/Message/1">Testinė žinutė nuo Jono</a></td>
-            </tr>
-            <tr>
-                <td>Petra</td>
-                <td><a href="/Message/2">Sveikinimai nuo Petros</a></td>
-            </tr>
-            <tr>
-                <td>Mantas</td>
-                <td><a href="/Message/3">Susitikimo informacija</a></td>
-            </tr>
+            @foreach (var zinute in Model.Zinutes)
+            {
+                <tr class="@(zinute.skaityta ? "" : "bold-message")">
+                    <td>@Model.GetSenderFullName(zinute.fk_naudotojo_siuntejo_id)</td>
+                    <td>@zinute.date.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>
+                        <form method="post" asp-page-handler="MarkAsRead">
+                            <input type="hidden" name="messageId" value="@zinute.zinutes_id" />
+                            <a href="@Url.Page("/Message", new { messageId = zinute.zinutes_id })"
+                               onclick="this.closest('form').submit(); return false;">
+                                @zinute.pavadinimas
+                            </a>
+                        </form>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
-
-    <script src="~/js/site.js"></script>
 </body>
 </html>
